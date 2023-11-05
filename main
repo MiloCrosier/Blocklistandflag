@@ -1,0 +1,81 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Nov  5 01:57:15 2023
+
+@author: crosim
+"""
+
+file1=input("Enter file for blocklist ==> ").strip()
+file2=input("Enter file for flagged terms ==> ").strip()
+file3=input("Enter file with username and comment ==> ").strip()
+file1open=open(file1)
+file2open=open(file2)
+file3open=open(file3)
+blocklist=set()
+for line in file1open:
+    value=line.split(" ")
+    for piece in value:
+        blocklist.add(piece.strip())
+for line in file3open:
+    file3sp=line.split("|")
+if file3sp[0].strip() in blocklist:
+    print("User blocked, comment not displayed.")
+else:
+    listsetval=set()
+    for line in file2open:
+        value=line.split(" ")
+        for part in value:
+            part.strip()
+            part.strip("\n")
+            part.rstrip("ed")
+            print(part)
+            listsetval.add(part.lower())
+    flagcount=0
+    f3com=file3sp[1]
+    wordsincommen=[]
+    listcommentwords=f3com.split(" ")
+    for word in listcommentwords:
+        wordcopy=list(word)
+        for letter in word:
+            if letter.isalpha()==False:
+                wordcopy.remove(letter)
+        word="".join(wordcopy)
+        if word!="":
+            wordsincommen.append((word.strip()).lower())
+    for word in wordsincommen:
+        word=word.strip()
+        word2=word.rstrip("ed")
+        
+        print(word in listsetval)
+        print(word)
+        if (word.lower()+"\n") in listsetval:
+            flagcount+=1
+            print(flagcount)
+            print('e')
+        if word2.lower() in listsetval:
+            flagcount+=1
+            print(flagcount)
+            print("f")
+    print(flagcount)
+    if flagcount==0:
+        print(file3sp[0],": ",f3com,sep='')
+    elif flagcount<=5:
+        print("Comment has been flagged. 1-5 instances of blocked terms.")
+        proceedure=(input("Y or N: do you wish to proceed?==> ").strip()).lower()
+        if proceedure=="y":
+            print(file3sp[0],": ",f3com,sep='')
+        else:
+            print("Comment has not been displayed.")
+    elif flagcount<=10:
+        print("Comment has been heavily flagged. 6-10 instances of blocked terms.")
+        proceedure=(input("Y or N: do you wish to proceed?(not recomended)").strip()).lower()
+        if proceedure=="y":
+            proceedure2=(input("Please confirm by entering \'y\'").strip()).lower()
+            if proceedure2=="y":
+                print(file3sp[0],": ",f3com,sep='')
+            else:
+                print("Comment has not been displayed.")
+        else:
+            print("Comment has not been displayed.")
+    else:
+        print("Comment has over 10 flags and has not been displayed.")
