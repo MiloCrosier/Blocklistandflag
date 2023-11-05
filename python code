@@ -27,8 +27,8 @@ else:
         for part in value:
             part.strip()
             part.strip("\n")
-            part.rstrip("ed")
-            print(part)
+            
+            
             listsetval.add(part.lower())
     flagcount=0
     f3com=file3sp[1]
@@ -44,19 +44,15 @@ else:
             wordsincommen.append((word.strip()).lower())
     for word in wordsincommen:
         word=word.strip()
-        word2=word.rstrip("ed")
         
-        print(word in listsetval)
-        print(word)
+        
+       
         if (word.lower()+"\n") in listsetval:
             flagcount+=1
-            print(flagcount)
-            print('e')
-        if word2.lower() in listsetval:
+            
+        elif word.lower() in listsetval:
             flagcount+=1
-            print(flagcount)
-            print("f")
-    print(flagcount)
+            
     if flagcount==0:
         print(file3sp[0],": ",f3com,sep='')
     elif flagcount<=5:
